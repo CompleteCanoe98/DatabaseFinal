@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - NeedsForHome</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #27ae60;
+            --bg: #ecf0f1;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 { color: var(--primary); margin-bottom: 25px; }
+
+        .form-group { text-align: left; margin-bottom: 15px; }
+
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { background-color: #219150; }
+
+        .btn-back {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #777;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover { background: #eee; color: var(--primary); }
+
+        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
+
+        p { color: #666; font-size: 0.9rem; }
+        a { color: var(--secondary); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Join NeedsForHome</h2>
+        
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="john@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group">
+                <label>Zip Code</label>
+                <input type="text" name="zip_code" placeholder="78539" pattern="785.*" title="We currently only serve the RGV (785 area codes)." required>
+            </div>
+            
+            <div class="form-group">
+                <label>I am a:</label>
+                <select name="role">
+                    <option value="Client">Client (Looking for help)</option>
+                    <option value="Provider">Provider (Offering services)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+
+        <hr>
+
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+
+        <a href="{{ url_for('home') }}">
+            <button type="button" class="btn-back">← Back to Home</button>
+        </a>
+    </div>
+
+</body>
+</html>
