@@ -81,12 +81,29 @@
         p { color: #666; font-size: 0.9rem; }
         a { color: var(--secondary); text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
+        
+        .flash-message {
+            background-color: #ffeaa7;
+            color: #d35400;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
         <h2>Join NeedsForHome</h2>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         
         <form action="/register" method="POST">
             <div class="form-group">
@@ -106,19 +123,36 @@
 
             <div class="form-group">
                 <label>Zip Code</label>
-                <input type="text" name="zip_code" placeholder="78539" pattern="785.*" title="We currently only serve the RGV (785 area codes)." required>
+                <input type="text" name="zip_code" placeholder="90210" pattern="^\d{5}$" title="Please enter a valid 5-digit US Zip Code." required>
             </div>
             
             <div class="form-group">
                 <label>I am a:</label>
-                <select name="role">
+                <select name="role" id="roleSelect">
                     <option value="Client">Client (Looking for help)</option>
                     <option value="Provider">Provider (Offering services)</option>
                 </select>
             </div>
+
+            <div class="form-group" id="serviceTypeBox" style="display: none;">
+                <label>Primary Service Offered</label>
+                <input type="text" name="service_type" placeholder="e.g., Plumbing, Cleaning, HVAC">
+            </div>
             
             <button type="submit" class="btn-submit">Create Account</button>
         </form>
+
+        <script>
+            // This script handles hiding/showing the Service box
+            document.getElementById('roleSelect').addEventListener('change', function() {
+                var serviceBox = document.getElementById('serviceTypeBox');
+                if (this.value === 'Provider') {
+                    serviceBox.style.display = 'block';
+                } else {
+                    serviceBox.style.display = 'none';
+                }
+            });
+        </script>
 
         <hr>
 
