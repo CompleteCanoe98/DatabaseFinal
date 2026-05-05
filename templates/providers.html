@@ -70,15 +70,15 @@
             font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary);
-            margin: 5px 0;
+            margin: 5px 0 10px 0;
         }
 
-        /* Styling for the new Rate and Zip info */
+        /* Styling for the Rate and Zip info */
         .rate-tag {
             font-size: 1.2rem;
             font-weight: bold;
             color: var(--accent);
-            margin: 10px 0;
+            margin: 15px 0 10px 0;
         }
 
         .zip-info {
@@ -96,14 +96,27 @@
             margin-bottom: 10px;
         }
 
+        /* The original Blue Badge */
         .badge {
             background: #e8f4fd;
             color: var(--secondary);
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* NEW: The Green Service Badge */
+        .service-badge {
+            background: #e8f8f5;
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-book {
@@ -140,14 +153,16 @@
                 <div class="provider-card">
                     <div class="avatar">{{ provider.name[0] }}</div>
                     <div class="provider-name">{{ provider.name }}</div>
+                    
                     <div class="badge">Verified Professional</div>
+                    <div class="service-badge">{{ provider.service_type }}</div>
                     
                     <div class="rate-tag">${{ provider.hourly_rate }}/hr</div>
                     
                     <div class="provider-email">{{ provider.email }}</div>
                     
                     <div class="zip-info">
-                        📍 Serving RGV (785 Area)
+                        📍 Serving Area: {{ provider.zip_code }}
                     </div>
                     
                     <p style="font-size: 0.75rem; color: #bbb; margin-bottom: 15px;">
