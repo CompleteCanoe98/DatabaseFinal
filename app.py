@@ -2,8 +2,9 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
 
-
+load_dotenv()
 # Initialize the Flask Application
 app = Flask(__name__)
 app.secret_key = "needs_for_home_super_secret_key" 
@@ -37,18 +38,18 @@ def register():
         role = request.form['role']
         zip_code = request.form.get('zip_code', '') 
         
-        # Security Check: Only allow RGV Zip Codes during registration
-        if zip_code and not zip_code.startswith('785'):
-            flash("Sorry, we currently only provide services in the RGV (785 area).")
-            return redirect(url_for('register'))
-
+        # Grab the service type (defaults to 'General Service' if they are a client)
+        service_type = request.form.get('service_type', 'General Service')
+        
         connection = create_db_connection()
         if connection:
             cursor = connection.cursor()
-            query = "INSERT INTO User (name, email, password, role) VALUES (%s, %s, %s, %s)"
-            cursor.execute(query, (name, email, password, role))
+            # UPDATED: Insert service_type into the database
+            query = "INSERT INTO User (name, email, password, role, zip_code, service_type) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (name, email, password, role, zip_code, service_type))
             connection.commit()
             connection.close()
+            
             flash("Account created! Please log in.")
             return redirect(url_for('login'))
     return render_template('register.html')
@@ -115,9 +116,7 @@ def create_booking():
     hours = 1 # Standard service duration for computation
 
     # BUSINESS LOGIC: Geographic check (RGV Area)
-    if not user_zip.startswith('785'):
-        flash("Error: We only serve the RGV (785 Area).")
-        return redirect(url_for('dashboard'))
+    
 
     connection = create_db_connection()
     if connection:
@@ -220,7 +219,8 @@ def view_providers():
     providers = []
     if connection:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT user_id, name, email, hourly_rate FROM User WHERE role = 'Provider'")
+        # UPDATED: Select service_type from the database
+        cursor.execute("SELECT user_id, name, email, hourly_rate, zip_code, service_type FROM User WHERE role = 'Provider'")
         providers = cursor.fetchall()
         connection.close()
     return render_template('providers.html', providers=providers)
